@@ -1,0 +1,598 @@
+
+/* WOHNRADAR – Architectural Minimalism
+   Sandstein, Anthrazit und gebrochenes Weiss.
+   Einheitliche Eingabekarten, dunkles Ergebnisfeld.
+   Bewertungsberechnung ausschliesslich in app.js.
+*/
+
+:root {
+    --ink: #262521;
+    --accent: #8A8072;
+    --accent-dark: #62594D;
+    --muted: #756F65;
+    --line: #D2C9BB;
+    --bg: #E8E1D5;
+    --card: #F9F7F2;
+    --card2: #262521;
+}
+
+* {
+    box-sizing: border-box;
+    border-radius: 0 !important;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    font: 15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;
+    color: var(--ink);
+}
+
+.wrap {
+    max-width: 1190px;
+    margin: auto;
+    padding: 28px 22px 70px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+}
+
+.brand {
+    font-weight: 850;
+    font-size: 22px;
+    letter-spacing: -.8px;
+}
+
+.brand em {
+    color: var(--accent-dark);
+    font-style: normal;
+}
+
+h1 {
+    font-size: clamp(26px,4vw,37px);
+    letter-spacing: -1.2px;
+    margin: 0 0 4px;
+}
+
+h2 {
+    font-size: 19px;
+    margin: 0 0 21px;
+    letter-spacing: -.35px;
+}
+
+.sub {
+    color: var(--muted);
+    margin: 0 0 25px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0,1.62fr) minmax(310px,.95fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.stack {
+    display: grid;
+    gap: 17px;
+}
+
+/* Einheitliche Eingabekarten */
+
+.card,
+.card:nth-child(even) {
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 25px 26px;
+    box-shadow: 0 3px 14px #2625210A;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 20px;
+}
+
+.field {
+    min-width: 0;
+    position: relative;
+}
+
+.field label,
+.lbl {
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.field input:not([type=range]),
+.field select {
+    width: 100%;
+    border: 1px solid #C6BDAF;
+    padding: 12px 13px;
+    font: inherit;
+    background: #FFFFFF;
+    color: var(--ink);
+}
+
+input:focus,
+button:focus-visible {
+    outline: 2px solid var(--accent-dark);
+    outline-offset: 2px;
+}
+
+.range {
+    margin: 19px 0 3px;
+}
+
+.rangehead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.rangehead output {
+    font-size: 13px;
+    color: var(--accent-dark);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+input[type=range] {
+    width: 100%;
+    accent-color: var(--accent-dark);
+    cursor: pointer;
+    margin: 12px 0 6px;
+}
+
+.seg {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+}
+
+.seg button {
+    border: 1px solid #C6BDAF;
+    background: #FFFFFF;
+    padding: 12px 8px;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.seg button.active {
+    border-color: var(--accent-dark);
+    background: #E8E1D5;
+    color: var(--ink);
+    font-weight: 750;
+}
+
+.types {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+}
+
+.typechoice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 60px;
+    padding: 10px 8px;
+    border: 1px solid #C6BDAF;
+    background: #FFFFFF;
+    cursor: pointer;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.typechoice input {
+    accent-color: var(--accent-dark);
+    margin: 0;
+    flex: none;
+}
+
+.typechoice:has(input:checked) {
+    background: #E8E1D5;
+    border-color: var(--accent-dark);
+    color: var(--ink);
+}
+
+.typechoice:focus-within {
+    outline: 2px solid var(--accent-dark);
+    outline-offset: 2px;
+}
+
+/* Dunkles Ergebnisfeld */
+
+.result {
+    background: var(--card2);
+    color: #F9F7F2;
+    padding: 2px 27px;
+    position: sticky;
+    top: 20px;
+    border: 1px solid var(--ink);
+    border-top: 3px solid #8A8072;
+    box-shadow: 0 8px 24px #26252116;
+}
+
+.result .eyebrow {
+    font-size: 12px;
+    letter-spacing: 1.1px;
+    font-weight: 800;
+    color: #C9BBA6;
+}
+
+.result .detail {
+    border-top: 1px solid #514D46;
+    padding: 14px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: baseline;
+}
+
+.result .detail span {
+    font-size: 12px;
+    color: #C9BBA6;
+}
+
+.result .detail strong {
+    font-size: 15px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    color: #F9F7F2;
+}
+
+.result .final-label {
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 23px;
+    color: #C9BBA6;
+}
+
+.result .big {
+    font-size: clamp(30px,3.7vw,43px);
+    font-weight: 850;
+    letter-spacing: -1.7px;
+    line-height: 1.17;
+    margin: 7px 0 4px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: #F9F7F2;
+}
+
+
+.result-heading {
+    color: #C9BBA6;
+    font-size: 13px;
+    font-weight: 750;
+    margin-top: 26px;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Zähler und Zurücksetzen */
+
+.count {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.count button,
+.reset {
+    background: #FFFFFF;
+    border: 1px solid #C6BDAF;
+    cursor: pointer;
+    color: var(--ink);
+}
+
+.count button {
+    font-size: 23px;
+    width: 42px;
+    height: 42px;
+}
+
+.count output {
+    min-width: 23px;
+    text-align: center;
+    font-weight: 750;
+}
+
+.reset {
+    padding: 10px 15px;
+    font-weight: 650;
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+/* Ortschaftssuche */
+
+.suggest {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    box-shadow: 0 12px 30px #26252118;
+    border: 1px solid #C6BDAF;
+    max-height: 270px;
+    overflow: auto;
+    z-index: 20;
+}
+
+.suggest button {
+    display: block;
+    text-align: left;
+    width: 100%;
+    background: #FFFFFF;
+    border: 0;
+    border-bottom: 1px solid #E9E4DC;
+    padding: 9px 12px;
+    cursor: pointer;
+    color: var(--ink);
+    font: inherit;
+}
+
+.suggest button:hover,
+.suggest button:focus {
+    background: #E8E1D5;
+}
+
+.suggest small {
+    color: var(--muted);
+    display: block;
+}
+
+.hide {
+    display: none !important;
+}
+
+/* Renovationen */
+
+details {
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+    padding-top: 17px;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: 750;
+    color: var(--accent-dark);
+}
+
+details[open] summary {
+    margin-bottom: 14px;
+}
+
+.reno {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.reno .rangehead label {
+    font-size: 13px;
+}
+
+.reno .hint {
+    margin: 0;
+}
+
+.reno input[type=range] {
+    margin: 6px 0 0;
+}
+
+.reno button {
+    border: 1px solid #C6BDAF;
+    background: #FFFFFF;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.reno .rangehead {
+    align-items: center;
+}
+
+.foot {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 24px;
+}
+
+/* Ortschaft löschen */
+
+.place-wrap {
+    position: relative;
+}
+
+.place-wrap input {
+    padding-right: 44px !important;
+}
+
+.clear-place {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.clear-place:hover {
+    background: #E8E1D5;
+    color: var(--ink);
+}
+
+.suggest button[aria-selected=true] {
+    background: #E8E1D5;
+    color: var(--ink);
+}
+
+.sub:empty {
+    display: none;
+}
+
+/* Navigation zwischen den vier Rechnern */
+
+.tool-nav {
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 8px;
+    margin: 0 0 29px;
+}
+
+.tool-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3px;
+    min-height: 72px;
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    border-bottom: 3px solid transparent;
+    background: var(--card);
+    color: var(--ink);
+    font: inherit;
+    text-decoration: none;
+    text-align: left;
+}
+
+.tool-nav__name {
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.3;
+}
+
+.tool-nav__meta {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+}
+
+.tool-nav__item--active {
+    background: var(--ink);
+    border-color: var(--ink);
+    border-bottom-color: var(--accent);
+    color: #F9F7F2;
+}
+
+.tool-nav__item--active .tool-nav__meta {
+    color: #C9BBA6;
+}
+
+.tool-nav__item:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+.tool-nav__item:focus-visible {
+    outline: 2px solid var(--accent-dark);
+    outline-offset: 2px;
+}
+
+/* Responsive Layout */
+
+@media(max-width:840px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .result {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        grid-row: 1;
+        padding: 13px 18px;
+        box-shadow: 0 6px 20px #26252120;
+    }
+
+    .result .detail {
+        display: none;
+    }
+
+    .result .big {
+        font-size: 30px;
+    }
+
+    .result .final-label {
+        margin-top: 0;
+    }
+}
+
+@media(max-width:700px) {
+    .tool-nav {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 7px;
+        margin-bottom: 24px;
+    }
+
+    .tool-nav__item {
+        min-height: 61px;
+        padding: 10px 12px;
+    }
+}
+
+@media(max-width:530px) {
+    .wrap {
+        padding: 16px 13px 45px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card {
+        padding: 19px;
+    }
+
+    .types {
+        grid-template-columns: 1fr;
+    }
+
+    .typechoice {
+        min-height: 42px;
+        justify-content: start;
+    }
+
+    .result .big {
+        font-size: 35px;
+    }
+}

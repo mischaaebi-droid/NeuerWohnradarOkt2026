@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html lang="de-CH"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>WOHNRADAR – Wohnungsmiete schätzen</title><link href="styles.css" rel="stylesheet"/><style>
+/* Mietrechner: alle Objektdaten in einer platzsparenden ersten Karte. */
+.rent-intro-stack { display:grid; gap:12px; }
+.rent-intro-stack > .field, .rent-intro-stack > .range { min-width:0; width:100%; }
+.rent-intro-stack > .range {
+  margin:0; padding:12px 14px 8px;
+  background:var(--card2); border:1px solid var(--highlight-line);
+  border-radius:11px;
+}
+.rent-intro-stack .rangehead { width:100%; }
+.rent-intro-stack input[type="range"] { display:block; width:100%; margin:9px 0 5px; }
+.rent-parking-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:3px; }
+.rent-parking-row .parking-field { min-width:0; }
+.rent-parking-row .lbl { margin-bottom:7px; }
+.rent-outdoor-note { margin:0; }
+@media(max-width:530px) {
+  .rent-intro-stack { gap:10px; }
+  .rent-parking-row { gap:9px; }
+}
+
+/* Wohnungstyp vor den jeweils passenden Aussenflächenregler setzen. */
+.rent-type-control { margin: 2px 0; }
+.rent-type-control .lbl { margin-bottom:8px; }
+.rent-type-control .rent-choice button { min-height:44px; }
+.rent-outdoor-range.hide { display:none !important; }
+@media (max-width:530px) { .rent-type-control .rent-choice { gap:5px; } .rent-type-control .rent-choice button { font-size:11px; padding:9px 4px; } }
+</style></head><body><div class="wrap"><header><div class="brand">WOHN<em>RADAR</em></div><button class="reset" id="reset" type="button">Zurücksetzen</button></header><nav aria-label="Immobilienrechner" class="tool-nav"><a class="tool-nav__item" href="index.html"><span class="tool-nav__name">Einfamilienhaus</span></a><a class="tool-nav__item" href="wohnungen.html"><span class="tool-nav__name">Eigentumswohnung</span></a><a aria-current="page" class="tool-nav__item tool-nav__item--active" href="miete.html"><span class="tool-nav__name">Miete</span></a><a class="tool-nav__item" href="bauland.html"><span class="tool-nav__name">Bauland</span></a></nav>
+<div class="layout"><main class="stack">
+<section class="card rent-overview"><h2>Wohnungsmiete schätzen</h2><div class="rent-intro-stack"><div class="field"><label for="placeInput">PLZ, Ortschaft oder Gemeinde</label><div class="place-wrap"><input aria-autocomplete="list" aria-controls="suggestions" aria-expanded="false" aria-label="PLZ oder Ort suchen" autocomplete="off" id="placeInput" role="combobox" spellcheck="false" value="5400 Baden"/><button aria-label="Ortschaft löschen" class="clear-place" id="clearPlace" type="button">×</button></div><div class="suggest hide" id="suggestions" role="listbox"></div></div><div class="rent-type-control"><div class="lbl">Wohnungstyp</div><div class="rent-choice" id="apartmentType"><button class="active" data-value="standard" type="button">Gewöhnliche Wohnung</button><button class="" data-value="attic" type="button">Attikawohnung</button><button class="" data-value="garden" type="button">Gartenwohnung</button></div></div>
+<div class="range"><div class="rangehead"><label for="living">Wohnfläche</label><output id="livingv">80 m²</output></div><input id="living" max="180" min="30" step="1" type="range" value="80"/></div><div class="range rent-outdoor-range" id="balconyField"><div class="rangehead"><label for="balconyArea">Balkonfläche</label><output id="balconyAreav">0 m²</output></div><input id="balconyArea" max="15" min="0" step="1" type="range" value="0"/></div><div class="range rent-outdoor-range hide" id="outdoorField"><div class="rangehead"><label for="outdoorArea">Terrassenfläche</label><output id="outdoorAreav">0 m²</output></div><input id="outdoorArea" max="80" min="0" step="1" type="range" value="0"/></div><div class="rent-caption rent-outdoor-note" id="outdoorNote">Der Zuschlag steigt bei kleinen Aussenflächen stärker und flacht danach ab. Er richtet sich nach dem örtlichen Mietniveau.</div><div class="rent-parking-row"><div class="parking-field"><div class="lbl">Einstellhallenplätze</div><div class="rent-stepper"><button aria-label="Einstellhallenplätze verringern" data-count="garage:-1" type="button">−</button><output id="garagev">0</output><button aria-label="Einstellhallenplätze erhöhen" data-count="garage:1" type="button">+</button></div></div><div class="parking-field"><div class="lbl">Aussenparkplätze</div><div class="rent-stepper"><button aria-label="Aussenparkplätze verringern" data-count="outside:-1" type="button">−</button><output id="outsidev">0</output><button aria-label="Aussenparkplätze erhöhen" data-count="outside:1" type="button">+</button></div></div></div></div></section>
+<section class="card"><h2>Lage und Wohnkomfort</h2><div class="lbl">Mikrolage innerhalb der Ortschaft</div><div class="rent-choice" data-default="normal" id="location"><button data-value="poor">Eher ungünstig</button><button class="active" data-value="normal">Durchschnittlich</button><button data-value="good">Sehr gut</button></div><div class="rent-caption">Zum Beispiel Lärm, Aussicht, Erreichbarkeit und Quartierqualität.</div>
+</section>
+<section class="card"><h2>Zustand der Wohnung</h2><div class="rent-choice" id="condition"><button data-value="old">Renovationsbedarf</button><button class="active" data-value="normal">Normal</button><button data-value="new">Neuwertig</button></div><div class="rent-caption">Geschätzter Einfluss des Ausbaustandards auf die Nettomiete. Der Vergleichswert entspricht einer durchschnittlichen Wohnung.</div></section>
+</main><aside aria-live="polite" class="result rent-result"><div class="final-label">Geschätzte Nettomiete pro Monat</div><div class="big" id="estimate">—</div><div class="result-heading">Berechnungsgrundlage</div><div class="detail"><span>Basismiete: PLZ und Wohnfläche</span><strong id="baseout">—</strong></div><div class="detail"><span>Lage und Zustand</span><strong id="qualityout">—</strong></div><div class="detail"><span>Wohnungstyp und Aussenfläche</span><strong id="typeout">—</strong></div><div class="detail"><span>Parkplätze</span><strong id="parkingout">—</strong></div><div class="result-heading">Marktspanne (Modellquantile)</div><div class="detail"><span>Unterer Wert (Q20)</span><strong id="low">—</strong></div><div class="detail"><span>Oberer Wert (Q80)</span><strong id="high">—</strong></div><div class="rent-status" id="status">Lade Mietmodell …</div></aside></div>
+<div class="foot">Schätzung der monatlichen Nettomiete ohne Nebenkosten. PLZ-spezifisches Mietmodell mit logarithmischer Wohnflächenfunktion (30–180 m²). Die Typenunterschiede sind anhand von Mietinseraten plausibilisiert (Attika im Median rund +14,6 % gegenüber dem allgemeinen PLZ-Modell); die Funktionen für Balkon-, Terrassen- und Gartenflächen sind vorsichtige Modellannahmen, keine empirisch isolierten Quadratmeterpreise. Lage, Zustand und Parkierung sind Modellannahmen. Angebotspreise sind keine abgeschlossenen Mietverträge. Die Marktspanne ist kein Konfidenzintervall.</div></div><script src="miete.js"></script></body></html>

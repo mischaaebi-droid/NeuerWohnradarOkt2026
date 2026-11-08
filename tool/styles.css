@@ -1,0 +1,532 @@
+/* ========================================================================== 
+   WOHNRADAR – Gemeinsames Design für Haus, Wohnung und Bauland
+   Farbwelt: Marineblau / Hellblau / Weiss
+   Alle drei HTML-Seiten können diese CSS-Datei unverändert verwenden.
+   ========================================================================== */
+
+/* 1. SCHRIFTEN UND FARBEN -------------------------------------------------- */
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("IBMPlexSans-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("IBMPlexSans-Bold.woff2") format("woff2");
+    font-weight: 700 900;
+    font-display: swap;
+}
+
+:root {
+    --ink: #203750;          /* Dunkles Marineblau: Haupttext */
+    --accent: #527FA9;       /* Mittelblau: aktive Elemente */
+    --accent-dark: #315D88;  /* Kräftiges Blau: Fokus und Links */
+    --muted: #5E7186;        /* Blaugrau: Zusatztexte */
+    --line: #D2DFEB;         /* Hellblau: Standardrahmen */
+    --bg: #F5F8FC;           /* Seitenhintergrund */
+    --card: #FFFFFF;         /* Karten und normale Eingabefelder */
+    --card2: #E0EDFA;        /* Hervorgehobene Eingaben und Ergebnisfeld */
+
+    --highlight-line: #C8DAEA; /* Rahmen hervorgehobener Flächen */
+    --button-blue: #D6E7F7;    /* Plus-/Minus-Tasten */
+    --button-border: #B8D0E5;  /* Rahmen der Plus-/Minus-Tasten */
+    --button-hover: #C5DDF2;   /* Hover der Plus-/Minus-Tasten */
+}
+
+/* 2. GRUNDLAYOUT UND TYPOGRAFIE -------------------------------------------- */
+* { box-sizing: border-box; }
+
+html { background: var(--bg); }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.5 "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.wrap {
+    max-width: 1190px;
+    margin: auto;
+    padding: 28px 22px 70px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid var(--line);
+}
+
+.brand {
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+}
+
+.brand em { color: var(--ink); font-style: normal; }
+
+h2 {
+    margin: 0 0 21px;
+    color: var(--ink);
+    font-size: 19px;
+    letter-spacing: -.35px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.62fr) minmax(310px, .95fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.stack { display: grid; gap: 17px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+
+.card {
+    padding: 25px 26px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 5px 24px rgba(32, 35, 70, .035);
+}
+
+.foot {
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* 3. NAVIGATION ZWISCHEN DEN RECHNERN -------------------------------------- */
+.tool-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0 0 29px;
+}
+
+.tool-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3px;
+    min-height: 72px;
+    padding: 13px 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 5px 24px rgba(32, 35, 70, .025);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+}
+
+.tool-nav__name { font-size: 14px; font-weight: 750; line-height: 1.3; }
+.tool-nav__meta { font-size: 11px; color: var(--muted); line-height: 1.3; }
+
+.tool-nav__item--active {
+    background: var(--card2);
+    border-color: var(--accent);
+    color: var(--ink);
+}
+
+.tool-nav__item--active .tool-nav__meta { color: var(--muted); }
+.tool-nav__item:disabled { cursor: not-allowed; opacity: .65; }
+.tool-nav__item:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+
+/* 4. EINGABEFELDER UND SCHIEBEREGLER --------------------------------------- */
+.field { min-width: 0; position: relative; }
+
+.field label,
+.lbl {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.field input:not([type=range]),
+.field select {
+    width: 100%;
+    padding: 12px 13px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--ink);
+    font: inherit;
+}
+
+input:focus,
+button:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+
+/* Schieberegler werden in den Renovationsdetails bewusst nicht eingerahmt. */
+.range { margin: 19px 0 3px; }
+
+.range:not(.reno .range) {
+    margin-top: 14px;
+    padding: 13px 14px 10px;
+    background: var(--card2);
+    border: 1px solid var(--highlight-line);
+    border-radius: 11px;
+}
+
+.rangehead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.rangehead label { color: var(--muted); }
+.rangehead output {
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+input[type=range] {
+    width: 100%;
+    margin: 12px 0 6px;
+    accent-color: var(--ink);
+    cursor: pointer;
+}
+
+/* 5. AUSWAHLFELDER: HAUSTYP UND RENOVATIONSZUSTAND ------------------------- */
+.seg,
+.types {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.seg button,
+.typechoice {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.seg button {
+    padding: 12px 8px;
+    font: inherit;
+    font-size: 12px;
+}
+
+.seg button.active,
+.typechoice:has(input:checked) {
+    background: var(--card2);
+    border-color: var(--accent);
+    color: var(--ink);
+}
+
+.seg button.active { font-weight: 750; }
+
+.typechoice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 60px;
+    padding: 10px 8px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.typechoice input { margin: 0; flex: none; accent-color: var(--ink); }
+.typechoice:focus-within { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+
+/* 6. ZÄHLER, RESET-KNOPF UND HINWEISE -------------------------------------- */
+.count { display: flex; align-items: center; gap: 14px; }
+
+.count button,
+.reset { border: 1px solid var(--line); border-radius: 10px; color: var(--ink); cursor: pointer; }
+
+.count button {
+    width: 42px;
+    height: 42px;
+    background: var(--button-blue);
+    border-color: var(--button-border);
+    font-size: 23px;
+}
+
+.count button:hover { background: var(--button-hover); }
+.count output { min-width: 23px; text-align: center; font-weight: 750; }
+
+.reset { padding: 10px 15px; background: var(--card); font-weight: 650; }
+.reset:hover { background: var(--card2); }
+.hint { margin-top: 8px; color: var(--muted); font-size: 12px; }
+.hide { display: none !important; }
+
+
+/* Parkplatz-Zähler: kompakte Stepper wie beim Steuerrechner (nur Haus) */
+.house-overview > .grid:first-of-type {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.parking-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    min-width: 0;
+}
+
+.parking-field { min-width: 0; }
+.parking-field .lbl {
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.parking-field .count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2px;
+    width: 100%;
+    height: 44px;
+    padding: 4px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+
+.parking-field .count button {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 7px;
+    background: var(--card2);
+    color: var(--ink);
+    font: 400 19px/1 "IBM Plex Sans", sans-serif;
+}
+
+.parking-field .count button:hover { background: var(--button-hover); }
+.parking-field .count output {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Die Haustyp-Auswahl beansprucht weniger Höhe als auf anderen Seiten. */
+.house-overview .typechoice {
+    min-height: 45px;
+    padding: 8px 9px;
+}
+
+@media (max-width: 650px) {
+    .house-overview > .grid:first-of-type {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .parking-inputs { gap: 12px; }
+}
+
+@media (max-width: 360px) {
+    .parking-field .lbl { font-size: 12px; }
+    .parking-field .count button { flex-basis: 28px; width: 28px; }
+}
+
+/* 7. ORTSSUCHE UND AUTOVERVOLLSTÄNDIGUNG ----------------------------------- */
+.place-wrap { position: relative; }
+.place-wrap input { padding-right: 44px !important; }
+
+.clear-place {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.clear-place:hover { background: var(--card2); color: var(--ink); }
+
+.suggest {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    max-height: 270px;
+    overflow: auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(32, 35, 70, .09);
+}
+
+.suggest button {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--card);
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.suggest button:hover,
+.suggest button:focus,
+.suggest button[aria-selected=true] { background: var(--card2); }
+
+.suggest small { display: block; color: var(--muted); }
+
+/* 8. AUSKLAPPBARE RENOVATIONEN (auch per JavaScript erzeugte Felder) ------- */
+details { margin-top: 20px; padding-top: 17px; border-top: 1px solid var(--line); }
+summary { color: var(--ink); font-weight: 750; cursor: pointer; }
+details[open] summary { margin-bottom: 14px; }
+
+.reno { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.reno .rangehead { align-items: center; }
+.reno .rangehead label { font-size: 13px; }
+.reno .hint { margin: 0; }
+.reno input[type=range] { margin: 6px 0 0; }
+.reno button {
+    padding: 4px 8px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+/* 9. ERGEBNISFELD ---------------------------------------------------------- */
+.result {
+    padding: 2px 27px 22px;
+    background: var(--card2);
+    border: 1px solid var(--highlight-line);
+    border-radius: 16px;
+    box-shadow: 0 5px 24px rgba(32, 35, 70, .035);
+    color: var(--ink);
+}
+
+.result .final-label {
+    margin-top: 23px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.result .big {
+    margin: 7px 0 4px;
+    color: var(--ink);
+    font-size: clamp(30px, 3.7vw, 43px);
+    font-weight: 800;
+    letter-spacing: -1.7px;
+    line-height: 1.17;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.result-heading {
+    margin: 26px 0 10px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.result .detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+}
+
+.result .detail span { color: var(--muted); font-size: 12px; }
+.result .detail strong {
+    color: var(--ink);
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* 10. ANPASSUNGEN FÜR TABLET UND HANDY ------------------------------------ */
+@media (max-width: 840px) {
+    .layout { grid-template-columns: 1fr; }
+
+    .result {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        grid-row: 1;
+        padding: 13px 18px;
+        box-shadow: 0 6px 20px #26252120;
+    }
+
+    .result .detail { display: none; }
+    .result .big { font-size: 30px; }
+    .result .final-label { margin-top: 0; }
+}
+
+@media (max-width: 700px) {
+    .tool-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-bottom: 24px; }
+    .tool-nav__item { min-height: 61px; padding: 10px 12px; }
+}
+
+@media (max-width: 530px) {
+    .parking-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .wrap { padding: 16px 13px 45px; }
+    .grid { grid-template-columns: 1fr; gap: 12px; }
+    .card { padding: 19px; }
+    .types { grid-template-columns: 1fr; }
+    .typechoice { min-height: 42px; justify-content: start; }
+    .result .big { font-size: 35px; }
+}
+
+/* 11. MIETRECHNER: kompakte Eingaben und transparente Ergebnisse ------------- */
+.rent-overview .grid { align-items: start; }
+.rent-overview .range { margin-top: 0; }
+.rent-overview .field { align-self: start; }
+.rent-subgrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px; margin-top: 17px; }
+.rent-stepper { display:flex; gap:5px; align-items:center; justify-content:space-between; height:42px; padding:4px; background:var(--card); border:1px solid var(--line); border-radius:10px; }
+.rent-stepper button { border:0; border-radius:7px; background:var(--card2); color:var(--ink); width:32px; height:32px; padding:0; cursor:pointer; font-size:20px; }
+.rent-stepper output { min-width:28px; text-align:center; font-weight:700; font-variant-numeric:tabular-nums; }
+.rent-choice { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.rent-choice button { min-width:0; padding:11px 6px; background:var(--card); border:1px solid var(--line); border-radius:10px; color:var(--ink); font:inherit; cursor:pointer; }
+.rent-choice button.active { background:var(--card2); border-color:var(--accent); font-weight:700; }
+.rent-choice button:focus-visible, .rent-stepper button:focus-visible { outline:2px solid var(--accent-dark); outline-offset:2px; }
+.rent-choice-wrap { margin-top:20px; }
+.rent-choice-wrap .lbl { margin-bottom:8px; }
+.rent-caption { font-size:12px; color:var(--muted); margin-top:9px; }
+.rent-result .final-label { margin-top:3px; }
+.rent-result .detail { padding:11px 0; }
+.rent-result .big { white-space:normal; }
+.rent-result .result-heading { margin-top:20px; }
+.rent-status { margin-top:12px; color:var(--muted); font-size:12px; }
+.rent-status.error { color:#a33333; }
+.rent-result .result-heading, .rent-result .detail { display:flex; }
+@media(max-width:840px) { .rent-result .detail { display:none; } .rent-result .result-heading { display:none; } }
+@media(max-width:530px) { .rent-subgrid { grid-template-columns:1fr 1fr; gap:9px; } .rent-choice button { padding:10px 3px; font-size:12px; } }

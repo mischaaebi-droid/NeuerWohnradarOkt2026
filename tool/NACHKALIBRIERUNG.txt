@@ -1,0 +1,8 @@
+WOHNRADAR Wohnungen – Nachkalibrierung
+
+Alle Wohnungswerte: Faktor 1/1.034 = 0.967118 (Korrektur der medianen Überbewertung von 3.4 %).
+Wohnfläche 220 bis 300 m²: linear ansteigender Zusatzfaktor; ab 300 m² Faktor 1.034/0.9132 = 1.13228.
+In Kombination beträgt der Faktor für Wohnungen ab 300 m² 1/0.9132 = 1.09505.
+Die frühere Vergleichsgruppe umfasst 220–350 m²; die Schwelle 300 m² ist eine glättende Modellannahme, keine neu geschätzte Optimierung.
+Die Korrekturen wurden anhand bereits zur Kalibrierung benutzter Inserate abgeleitet. Keine unabhängige Nachvalidierung.
+Die Hausbewertung bleibt unverändert.

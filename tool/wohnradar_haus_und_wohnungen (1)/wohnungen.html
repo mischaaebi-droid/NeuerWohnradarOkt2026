@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="de-CH">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>WOHNRADAR – Eigentumswohnung schätzen</title>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="brand">
+     WOHN<em>RADAR
+     </em>
+</div>
+<button class="reset" id="reset">
+     Zurücksetzen
+    </button>
+</header>
+<nav aria-label="Immobilienrechner" class="tool-nav">
+<a class="tool-nav__item" href="index.html"><span class="tool-nav__name">Einfamilienhaus</span></a>
+<a aria-current="page" class="tool-nav__item tool-nav__item--active" href="wohnungen.html"><span class="tool-nav__name">Eigentumswohnung</span></a>
+<button class="tool-nav__item" disabled="" title="Mietpreis-Rechner in Vorbereitung" type="button"><span class="tool-nav__name">Miete</span></button>
+<button class="tool-nav__item" disabled="" title="Bauland-Rechner in Vorbereitung" type="button"><span class="tool-nav__name">Bauland</span></button>
+</nav>
+<div class="layout">
+<main class="stack">
+<section class="card">
+<h2>Eigentumswohnung schätzen</h2>
+<div class="grid">
+<div class="field">
+<label for="placeInput">
+         PLZ, Ortschaft oder Gemeinde
+        </label>
+<div class="place-wrap">
+<input aria-autocomplete="list" aria-controls="suggestions" aria-expanded="false" aria-label="Ortschaft oder Postleitzahl suchen" autocomplete="off" id="placeInput" role="combobox" spellcheck="false" value="5400 Baden"/>
+<button aria-label="Ortschaft löschen" class="clear-place" id="clearPlace" title="Eingabe löschen" type="button">
+          ×
+         </button>
+</div>
+<div class="suggest hide" id="suggestions" role="listbox">
+</div>
+<div class="hint" id="placeHint">
+</div>
+</div>
+</div>
+<div class="lbl" style="margin-top:19px">Wohnungstyp</div>
+<div class="types" id="type"><label class="typechoice"><input checked="" name="apartmentType" type="radio" value="standard"/>Etagenwohnung</label><label class="typechoice"><input name="apartmentType" type="radio" value="attic"/>Attikawohnung</label><label class="typechoice"><input name="apartmentType" type="radio" value="garden"/>Gartenwohnung</label></div>
+<div class="grid">
+<div class="range">
+<div class="rangehead">
+<label for="living">
+          Wohnfläche
+         </label>
+<output id="livingv">
+</output>
+</div>
+<input id="living" max="300" min="25" step="5" type="range" value="100"/>
+</div>
+<div class="range">
+<div class="rangehead">
+<label for="land">Balkon- / Terrassenfläche</label>
+<output id="landv">
+</output>
+</div>
+<input id="land" max="150" min="0" step="1" type="range" value="12"/>
+</div>
+</div>
+<div class="grid" style="margin-top:20px"><div class="range"><div class="rangehead"><label for="floor">Stockwerk</label><output id="floorv"></output></div><input id="floor" max="12" min="0" step="1" type="range" value="2"/></div><div class="field"><label for="lift">Lift vorhanden?</label><select id="lift"><option selected="" value="yes">Ja</option><option value="no">Nein</option></select></div></div></section>
+<section class="card">
+<h2>
+       Alter und Renovationen
+      </h2>
+<div class="range">
+<div class="rangehead">
+<label for="built">
+         Baujahr
+        </label>
+<output id="builtv">
+</output>
+</div>
+<input id="built" max="2026" min="1850" step="1" type="range" value="1995"/>
+</div>
+<div class="lbl" style="margin-top:20px">
+       Renovationszustand
+      </div>
+<div class="seg" id="condition">
+<button data-cond="old">
+        Hoher Renovationsbedarf
+       </button>
+<button class="active" data-cond="normal">
+        Teilweise renoviert
+       </button>
+<button data-cond="new">
+        Umfassend renoviert
+       </button>
+</div>
+<details>
+<summary>
+        Einzelne Renovationen anpassen
+       </summary>
+<div class="hint">
+        Jahr der letzten Erneuerung wählen. Nie erneuert? Baujahr belassen.
+       </div>
+<div id="ageFields">
+</div>
+</details>
+</section>
+<section class="card">
+<h2>
+       Lage und Wohnkomfort
+      </h2>
+<div id="sliders">
+</div>
+</section>
+<section class="card">
+<div class="grid">
+<div>
+<div class="lbl">
+         Garagenplätze
+        </div>
+<div class="count">
+<button aria-label="Garagenplätze verringern" data-count="garage:-1">
+          −
+         </button>
+<output id="garagev">1</output>
+<button aria-label="Garagenplätze erhöhen" data-count="garage:1">
+          +
+         </button>
+</div>
+</div>
+<div>
+<div class="lbl">
+         Aussenparkplätze
+        </div>
+<div class="count">
+<button aria-label="Aussenparkplätze verringern" data-count="outside:-1">
+          −
+         </button>
+<output id="outsidev">0</output>
+<button aria-label="Aussenparkplätze erhöhen" data-count="outside:1">
+          +
+         </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<aside aria-live="polite" class="result">
+<div class="final-label">
+        Verkehrswert
+    </div>
+<div class="big" id="estimate">
+        —
+    </div>
+<div class="result-heading">
+        Berücksichtigt:
+    </div>
+<div class="detail">
+<span>Altersabzug</span>
+<strong id="ageout">—</strong>
+</div>
+<div class="detail">
+<span id="garageLabel">1 Garagenplatz</span>
+<strong id="garageout">—</strong>
+</div>
+<div class="detail">
+<span id="outsideLabel">1 Aussenparkplatz</span>
+<strong id="outsideout">—</strong>
+</div>
+</aside>
+</div>
+<div class="foot">Modellbasierte Schätzung auf Grundlage von RealAdvisor-PLZ-Medianpreisen. Eigenschaften-Zuschläge sind Modellannahmen, keine empirisch geschätzten Koeffizienten.</div>
+</div>
+<script src="wohnungen.js">
+</script>
+</body>
+</html>
